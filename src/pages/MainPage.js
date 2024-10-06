@@ -1,30 +1,23 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useUserContext } from '../context/userContext';
+import { useNavigate } from 'react-router-dom';
 
 const FoodPage = () => {
-  const [selectedOptions, setSelectedOptions] = useState([]); 
-  const [customIdea, setCustomIdea] = useState('');
+  const {
+    selectedOptions,
+    customIdea,
+    setCustomIdea,
+    handleOptionSelect,
+  } = useUserContext();
+  const navigate = useNavigate(); 
 
-  const handleInputChange = (e) => {
-    setCustomIdea(e.target.value);
-  };
+  const handleSubmit = () =>{
+    navigate('/congrats')
+  }
 
-  const handleOptionSelect = (option) => {
-    if (selectedOptions.includes(option)) {
-      const updatedOptions = selectedOptions.filter((selected) => selected !== option);
-      setSelectedOptions(updatedOptions);
-      localStorage.setItem('ideas', JSON.stringify(updatedOptions)); 
-    } else {
-      const updatedOptions = [...selectedOptions, option];
-      setSelectedOptions(updatedOptions);
-      localStorage.setItem('ideas', JSON.stringify(updatedOptions)); 
-    }
-  };
-  
-
-  console.log(localStorage.getItem('ideas'))
 
   return (
-    <div className="h-screen flex flex-col p-10 gap-y-6 items-center">
+    <div className="h-auto flex flex-col p-20 gap-y-6 items-center">
       <h1 className="text-4xl font-medium text-pink-700 mb-4 text-center">
         What do you want to do on our date?
       </h1>
@@ -84,22 +77,34 @@ const FoodPage = () => {
             Watch a movie 🎬
           </p>
         </div>
+
+        <div
+          onClick={() => handleOptionSelect('gosomewhere')}
+          className={`relative w-64 h-64 rounded-full overflow-hidden shadow-lg transition-transform duration-300 hover:scale-105 cursor-pointer 
+            ${selectedOptions.includes('gosomewhere') ? 'border-4 border-pink-500' : ''}`} 
+        >
+          <img src="images.png" alt="somewhere" className="object-fit w-full h-full" />
+          <p className="absolute bottom-5 bg-black bg-opacity-50 text-white w-full text-center py-2">
+            Go somewhere 🙋
+          </p>
+        </div>
       </div>
 
-      <div className="w-full max-w-md mt-6 flex flex-col items-center">
-        <p className="text-xl text-pink-700 mb-2">
-          Got something else in mind? Let me know!
+      <div className="w-full max-w-md  mt-6 flex flex-col items-center  ">
+        <p className="text-xl text-pink-700 mb-2 text-center">
+          Got something else in mind? Let me know! or <span className='text-red-500 font-bold underline'>recommend a place</span>
         </p>
         <input
           type="text"
           className="w-full py-3 px-4 rounded-full border-2 border-pink-300 focus:ring-pink-400 focus:outline-none"
           placeholder="Type your idea here..."
           value={customIdea}
-          onChange={handleInputChange}
+          onChange={(e) => setCustomIdea(e.target.value)}
         />
         <button
           className="mt-4 bg-pink-500 text-white font-semibold rounded-full py-2 px-6 shadow-lg transition-transform duration-300 hover:scale-105 hover:bg-pink-600 focus:ring-4 focus:ring-pink-300 focus:outline-none"
           disabled={!customIdea && selectedOptions.length === 0} 
+          onClick={handleSubmit}
         >
           Submit Idea
         </button>

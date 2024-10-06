@@ -1,21 +1,16 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom'; 
 import kilig from '../assets/kilig.mp3';
+import { useUserContext } from '../context/userContext';
 
 const YesPage = () => {
-  const [date, setDate] = useState(localStorage.getItem('date') || '');
+  const { date, handleDateChange } = useUserContext();
   const audioRef = useRef(null);
   const navigate = useNavigate(); 
 
   useEffect(() => {
     audioRef.current.play();
   }, []);
-
-  const handleChange = (e) => {
-    const selectedDate = e.target.value;
-    setDate(selectedDate);
-    localStorage.setItem('date', selectedDate); 
-  };
 
   const handleSubmit = () => {
     if (date) {
@@ -58,7 +53,7 @@ const YesPage = () => {
             type="date"
             className="py-2 px-3 rounded-full w-56 border-2 border-pink-300 focus:ring-pink-400"
             value={date}
-            onChange={handleChange}
+            onChange={handleDateChange}
           />
           <button
             className="w-28 bg-pink-500 text-white font-semibold rounded-full py-2 shadow-lg transition-transform duration-300 ease-in-out hover:scale-105 hover:bg-pink-600 focus:ring-4 focus:ring-pink-300 focus:outline-none"
