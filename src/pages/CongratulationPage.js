@@ -4,9 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import emailjs from '@emailjs/browser';
 
 const CongratulationPage = () => {
-  const { date, selectedOptions } = useUserContext(); 
+  const { date, selectedOptions , customIdea } = useUserContext(); 
   const navigate = useNavigate();
-
 
   const sendEmail = (e) => {
     e.preventDefault(); 
@@ -17,7 +16,8 @@ const CongratulationPage = () => {
 
     const emailData = {
         date: date,
-        ideas: formattedIdeas
+        ideas: formattedIdeas,
+        recommendation : customIdea
     };
 
     emailjs.send(process.env.REACT_APP_SERVICE_ID, process.env.REACT_APP_TEMPLATE_ID, emailData,
