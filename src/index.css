@@ -13,6 +13,5 @@
     html,
     body{
         @apply bg-no-repeat bg-cover bg-[url('./assets/pink-sky-background-with-crescent-moon.jpg')];
-
     }
 }   
